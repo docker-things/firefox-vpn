@@ -1,4 +1,4 @@
-FROM gui-apps-base-vpn:18.04
+FROM gui-apps-base-vpn
 MAINTAINER Gabriel Ionescu <gabi.ionescu+dockerthings@protonmail.com>
 
 RUN apt-get update \
@@ -28,8 +28,8 @@ RUN apt-get update \
 # ENV LIBGL_ALWAYS_SOFTWARE 1
 # ENV LIBGL_DEBUG verbose
 
-# SET USER
-USER $DOCKER_USERNAME
+# # SET USER
+# USER $DOCKER_USERNAME
 
 # ENTRYPOINT
 ENTRYPOINT ["/usr/bin/with-vpn", "/usr/bin/firefox"]

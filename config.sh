@@ -10,13 +10,18 @@ BACKUP_PATH=""
 FIFO_PATH="/tmp/docker-things/fifo"
 
 # The name of the docker image
-PROJECT_NAME="firefox"
+PROJECT_NAME="firefox-vpn"
 
 # Meta to set in the .desktop file
 APP_GENERIC_NAME="Web Browser"
 APP_CATEGORIES="GNOME;GTK;Network;WebBrowser;"
 APP_MIME_TYPE="text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;"
 APP_PARAM="%u"
+
+# VPN CREDENTIALS
+OPENVPN_CONF=""
+OPENVPN_USER=""
+OPENVPN_PASS=""
 
 # BUILD ARGS
 BUILD_ARGS=(
@@ -42,6 +47,14 @@ RUN_ARGS=(
 
     -v $XDG_RUNTIME_DIR/pulse:$XDG_RUNTIME_DIR/pulse
     -e PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
+
+    --cap-add=NET_ADMIN
+    --device /dev/net/tun
+
+    # -v "`ls $(pwd)/vpn-config/*.ovpn | head -n 1`":/tmp/vpn-config.ovpn
+    -v "$OPENVPN_CONF":/opt/vpn/config.ovpn
+    -e OPENVPN_USER="$OPENVPN_USER"
+    -e OPENVPN_PASS="$OPENVPN_PASS"
 
     --rm
     -d
